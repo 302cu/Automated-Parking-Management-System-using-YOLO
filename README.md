@@ -1,6 +1,6 @@
 # Automated Parking Management System using YOLO
 
-![Uploading Untitled video - Made with Clipchamp.gif…]()
+![Untitled video - Made with Clipchamp](https://github.com/302cu/Automated-Parking-Management-System-using-YOLO/assets/90270758/fd3e6f77-8c83-4147-9aeb-463bd9c78973)
 
 ## Overview
 This project leverages YOLO (You Only Look Once) models including YOLOv8 and YOLO-NAS, along with super-gradients, to create a robust automated parking management system. The system is designed to optimize parking space utilization and ensure compliance using state-of-the-art machine learning techniques.
