@@ -1,0 +1,8 @@
+path: /content/drive/MyDrive/FinalP/Data/datasets/
+train: train/images
+val: test/images
+
+names:
+  0: parking
+ 
+  
