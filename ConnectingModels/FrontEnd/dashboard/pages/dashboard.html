@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <title>
+    Parking management
+  </title>
+  <!-- Fonts and icons -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <!-- Nucleo Icons -->
+  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
+
+  <style>
+    video, .meow {
+            margin-top: 10px;
+            display: none;
+        }
+        #frameImg {
+  border-radius: 10px; 
+  border-top-left-radius: 15px; 
+  border-top-right-radius: 20px; 
+  border-bottom-right-radius: 25px; 
+  border-bottom-left-radius: 30px; 
+}
+  </style>
+</head>
+
+<body class="g-sidenav-show bg-gray-100">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+    <div class="container-fluid py-1 px-3">
+      <div id="status">Status: Waiting for source...</div>
+      <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+        <div class="ms-md-auto pe-md-3 d-flex align-items-center"></div>
+        <ul class="navbar-nav justify-content-end">
+          <li class="nav-item d-flex align-items-center">
+            <input class="btn btn-outline-primary btn-sm mb-0 me-3" type="file" id="videoFile" accept="video/*" style="display: none;">
+            <button class="btn btn-outline-primary btn-sm mb-0 me-3" id="videoFileBtn">Parking monitoring source</button>
+
+            <input class="btn btn-outline-primary btn-sm mb-0 me-3" type="file" id="videoFileGate" accept="video/*" style="display: none;">
+            <button class="btn btn-outline-primary btn-sm mb-0 me-3" id="videoFileBtnGate">Gate monitoring source</button>
+
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- End Navbar -->
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-body p-3">
+            <div class="row">
+              <div class="col-8">
+                <div class="numbers">
+                  <p class="text-sm mb-0 text-capitalize font-weight-bold">Cars count</p>
+                  <h5 class="font-weight-bolder mb-0" id="carCount">000</h5>
+                </div>
+              </div>
+              <div class="col-4 text-end">
+                <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                  <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-body p-3">
+            <div class="row">
+              <div class="col-8">
+                <div class="numbers">
+                  <p class="text-sm mb-0 text-capitalize font-weight-bold">Parking count</p>
+                  <h5 class="font-weight-bolder mb-0" id="parkingCount">000</h5>
+                </div>
+              </div>
+              <div class="col-4 text-end">
+                <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                  <i class="ni ni-world text-lg opacity-10" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+          <div class="card-body p-3">
+            <div class="row">
+              <div class="col-8">
+                <div class="numbers">
+                  <p class="text-sm mb-0 text-capitalize font-weight-bold">Free parking</p>
+                  <h5 class="font-weight-bolder mb-0" id="free">
+                    000
+                  </h5>
+                </div>
+              </div>
+              <div class="col-4 text-end">
+                <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                  <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6">
+        <div class="card">
+          <div class="card-body p-3">
+            <div class="row">
+              <div class="col-8">
+                <div class="numbers">
+                  <p class="text-sm mb-0 text-capitalize font-weight-bold">Parking violation</p>
+                  <h5 class="font-weight-bolder mb-0" id="wrong">
+                    000
+                  </h5>
+                </div>
+              </div>
+              <div class="col-4 text-end">
+                <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                  <i class="ni ni-cart text-lg opacity-10" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-lg-6 mb-lg-0 mb-4">
+          <div class="card">
+              <div class="card-body p-3">
+                  <div class="row justify-content-center">
+                      <div class="col-lg-12 text-center mt-5 mt-lg-0">
+                          <div class="bg-gradient-primary border-radius-lg h-100 position-relative">
+                              <div class="position-absolute d-flex flex-column align-items-start justify-content-center h-100 z-index-2 ps-4">
+                                <div id="hide it">
+                                  <h5 class="text-white font-weight-bolder mb-4 pt-2 text-start">Work with parkings</h5>
+                                  <p class="text-white text-start">Embracing an automated parking monitoring solution unlocks a world of efficiency, elevating your property's security and user experience to new heights.</p>
+                                  <a class="text-white text-sm font-weight-bold mb-0 icon-move-right mt-auto text-start" href="javascript:loadData();">
+                                      Add monitoring source
+                                      <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>
+                                  </a>
+                                  </div>
+                              </div>
+                              <canvas id="canvas" class="meow" width="885" height="480"></canvas>
+                              <img id="frameImg1" class="img-fluid z-index-70" width="885" height="480">
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-lg-6 mb-lg-0 mb-4">
+          <div class="card">
+              <div class="card-body p-3">
+                  <div class="row justify-content-center">
+                      <div class="col-lg-12 text-center mt-5 mt-lg-0">
+                          <div  class="bg-gradient-primary border-radius-lg h-100" style="transform: scaleX(-1);">
+                              <div  class="position-absolute d-flex flex-column align-items-start justify-content-center h-100 z-index-2 ps-4" style="transform: scaleX(-1);">
+                               <div id="hide it2">
+                                <h5  class="text-white font-weight-bolder mb-4 pt-2 text-start">Works with gates</h5>
+                                  <p  class="text-white text-start">Automating your gates is a fantastic way to streamline access, enhance security, and add convenience to your property.</p>
+                                  <a  class="text-white text-sm font-weight-bold mb-0 icon-move-right mt-auto text-start" href="javascript:loadData();">
+                                      Add monitoring source
+                                      <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>
+                                  </a>
+                                </div>
+                              </div>
+                              <canvas id="canvas" class="meow" width="885" height="480"></canvas>
+                              <img id="frameImg2" class="img-fluid z-index-70" style="transform: scaleX(-1);" width="885" height="480">
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+      <div class="row mt-4">
+        <div class="col-lg-5 mb-lg-0 mb-4">
+          <div class="card z-index-2">
+            <div class="card-body p-3">
+              <div class="bg-gradient-dark border-radius-lg py-3 pe-1 mb-3">
+                <div class="chart">
+                 <canvas id="chart-bars" class="chart-canvas" height="275"></canvas>
+                </div>
+              </div>
+              <h6 class="ms-2 mt-4 mb-0"> Hourly Traffic </h6>
+               
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="card z-index-2">
+            <div class="card-header pb-0">
+              <h6>Traffic overview</h6>
+              
+            </div>
+            <div class="card-body p-3">
+              <div class="chart">
+                <canvas id="chart-line" class="chart-canvas" height="300"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-4">
+        <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
+          <div class="card">
+            <div class="card-header pb-0">
+              <div class="row">
+                <div class="col-lg-6 col-7">
+                  <h6>Parking timer</h6>
+                  
+                </div>
+                <div class="col-lg-6 col-5 my-auto text-end">
+                  
+                </div>
+              </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Plates</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Starting time</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Timer</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="align-middle">
+                        <div class="d-flex px-2 py-1 align-items-center">
+                          <h6 class="mb-0 text-sm">1263 HJH</h6>
+                        </div>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <span class="text-xs font-weight-bold"> 03:42 </span>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <span class="text-xs font-weight-bold"> 5678 s </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="align-middle">
+                        <div class="d-flex px-2 py-1 align-items-center">
+                          <h6 class="mb-0 text-sm">7643 APK</h6>
+                        </div>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <span class="text-xs font-weight-bold"> 02:42 </span>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <span class="text-xs font-weight-bold"> 7678 s </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+     
+    </div>
+  </main>
+  <div class="fixed-plugin">
+   
+    
+  <!--   Core JS Files   -->
+  <script src="../assets/js/core/popper.min.js"></script>
+  <script src="../assets/js/core/bootstrap.min.js"></script>
+  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="../assets/js/plugins/chartjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+  <script>
+fetch('data.json')
+  .then(response => response.json())
+  .then(data => {
+    // Update bar chart
+    updateBarChart(data.barChart.labels, data.barChart.data);
+
+    // Update line chart
+    updateLineChart(data.lineChart.labels, data.lineChart.datasets);
+  });
+    var ctx = document.getElementById("chart-bars").getContext("2d");
+    function updateBarChart(labels, data) {
+  var ctx = document.getElementById("chart-bars").getContext("2d");
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Traffic",
+        tension: 0.4,
+        borderWidth: 0,
+        borderRadius: 4,
+        borderSkipped: false,
+        backgroundColor: "#fff",
+        data: data,
+        maxBarThickness: 6
+      }],
+    },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+        scales: {
+          y: {
+            grid: {
+              drawBorder: false,
+              display: false,
+              drawOnChartArea: false,
+              drawTicks: false,
+            },
+            ticks: {
+              suggestedMin: 0,
+              suggestedMax: 500,
+              beginAtZero: true,
+              padding: 15,
+              font: {
+                size: 14,
+                family: "Open Sans",
+                style: 'normal',
+                lineHeight: 2
+              },
+              color: "#fff"
+            },
+          },
+          x: {
+            grid: {
+              drawBorder: false,
+              display: false,
+              drawOnChartArea: false,
+              drawTicks: false
+            },
+            ticks: {
+              display: false
+            },
+          },
+        },
+      },
+    });};
+
+
+    var ctx2 = document.getElementById("chart-line").getContext("2d");
+
+    var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
+    gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
+
+    var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
+    gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
+    function updateLineChart(labels, datasets) {
+  var ctx2 = document.getElementById("chart-line").getContext("2d");
+  new Chart(ctx2, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: datasets.map(dataset => ({
+        label: dataset.label,
+        tension: 0.4,
+        borderWidth: 0,
+        pointRadius: 0,
+        borderColor: dataset.label === "Day" ? "#cb0c9f" : "#3A416F",
+        borderWidth: 3,
+        backgroundColor: dataset.label === "Day" ? gradientStroke1 : gradientStroke2,
+        fill: true,
+        data: dataset.data,
+        maxBarThickness: 6
+      })),
+    },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+        scales: {
+          y: {
+            grid: {
+              drawBorder: false,
+              display: true,
+              drawOnChartArea: true,
+              drawTicks: false,
+              borderDash: [5, 5]
+            },
+            ticks: {
+              display: true,
+              padding: 10,
+              color: '#b2b9bf',
+              font: {
+                size: 11,
+                family: "Open Sans",
+                style: 'normal',
+                lineHeight: 2
+              },
+            }
+          },
+          x: {
+            grid: {
+              drawBorder: false,
+              display: false,
+              drawOnChartArea: false,
+              drawTicks: false,
+              borderDash: [5, 5]
+            },
+            ticks: {
+              display: true,
+              color: '#b2b9bf',
+              padding: 20,
+              font: {
+                size: 11,
+                family: "Open Sans",
+                style: 'normal',
+                lineHeight: 2
+              },
+            }
+          },
+        },
+      },
+    });};
+   
+    const videoFileBtn = document.getElementById('videoFileBtn');
+        const videoFile = document.getElementById('videoFile');
+        const videoFileBtnGate = document.getElementById('videoFileBtnGate');
+        const videoFileGate = document.getElementById('videoFileGate');
+        const statusElement = document.getElementById('status');
+        const canvasElement = document.getElementById('canvas');
+        const canvasCtx = canvasElement.getContext('2d');
+        let websocket;
+        let videoElement1, videoElement2;
+
+        videoFileBtn.addEventListener('click', () => {
+            videoFile.click();
+        });
+
+        videoFileBtnGate.addEventListener('click', () => {
+          //clearAllData()
+            videoFileGate.click();
+        });
+
+        videoFile.addEventListener('change', () => {
+            startVideo(videoFile, 1);
+            statusElement.innerText = 'Status: WebSocket loading';
+        });
+
+        videoFileGate.addEventListener('change', () => {
+            startVideo(videoFileGate, 2);
+            statusElement.innerText = 'Status: WebSocket loading';
+        });
+
+        function initializeWebSocket() {
+            websocket = new WebSocket('ws://94f5-34-80-38-147.ngrok-free.app');
+
+            websocket.addEventListener('open', () => {
+                statusElement.innerText = 'Status: WebSocket connection established';
+            });
+
+            websocket.addEventListener('message', (event) => {
+                const data = JSON.parse(event.data);
+                updateCanvas(data);
+            });
+
+            websocket.addEventListener('close', () => {
+                statusElement.innerText = 'Status: WebSocket connection closed';
+            });
+
+            websocket.addEventListener('error', (error) => {
+                console.error('WebSocket error:', error);
+                statusElement.innerText = 'Status: WebSocket error';
+            });
+        }
+
+        function startVideo(videoInput, videoNumber) {
+            const file = videoInput.files[0];
+            if (!file) return;
+            const fileURL = URL.createObjectURL(file);
+            const video = document.createElement('video');
+            video.src = fileURL;
+            video.hidden = true;
+            video.muted = true;  // Mute the video
+
+            if (videoNumber === 1) {
+                videoElement1 = video;
+            } else {
+                videoElement2 = video;
+            }
+
+            video.onloadedmetadata = () => {
+                const fps = 1; // 1 frame per second
+                const interval = 1000 / fps;
+                setInterval(() => {
+                    if (!video.paused && !video.ended) {
+                        captureAndSend(video, videoNumber);
+                    }
+                }, interval);
+            };
+
+            video.addEventListener('loadedmetadata', () => {
+                if (!websocket || websocket.readyState !== WebSocket.OPEN) {
+                    initializeWebSocket();
+                }
+                video.play();
+            });
+
+            document.body.appendChild(video);
+        }
+
+        function captureAndSend(videoElement, videoNumber) {
+            canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+            const imageData = canvasElement.toDataURL('image/jpeg');
+            websocket.send(JSON.stringify({ imageData, videoNumber }));
+        }
+
+        function updateCanvas(data) {
+    const frameDataUrl = data['frame'];
+    const videoNumber = data['videoNumber'];
+
+    let carCounts = [];
+    let parkingCounts = [];
+
+    
+  
+
+
+  const frameImg = document.getElementById(videoNumber === 1 ? 'frameImg1' : 'frameImg2');
+    frameImg.src = frameDataUrl;
+  
+    if (videoNumber === 1) {
+  const carCount = parseInt(data['car count']);
+  const parkingCount = parseInt(data['parking count']);
+  const free = parseInt(data['free parking']);
+  const wrong = parseInt(data['wrong parking']);
+
+  document.getElementById('carCount').innerText = carCount;
+  document.getElementById('parkingCount').innerText = parkingCount;
+  document.getElementById('free').innerText = free;
+  document.getElementById('wrong').innerText = wrong;
+
+  carCounts.push(carCount);
+  parkingCounts.push(parkingCount);
+
+  const hideElement = document.getElementById("hide it");
+  if (hideElement) {
+    hideElement.style.display = "none";
+  }
+}else{
+  frameImg.src = frameDataUrl;
+  const PlateNum = data['plates Nums'];
+const currentTimestamp = new Date().toISOString();
+fetch('allowedPlates.json')
+.then(response => response.json())
+.then(data => {
+const isAllowed = data.hasOwnProperty(PlateNum);
+const status = isAllowed ? "allowed" : "trespassing";
+
+
+const newEntry = {
+  plateNumber: PlateNum,
+  timestamp: currentTimestamp,
+  status: status
+};
+
+// Save the data to localStorage
+saveToLocalStorage('CurrentPlates', newEntry);
+})
+.catch(error => console.error('Error fetching data from another JSON file:', error));
+
+function saveToLocalStorage(key, data) {
+let existingData = localStorage.getItem(key);
+if (existingData) {
+existingData = JSON.parse(existingData);
+} else {
+existingData = [];
+}
+
+existingData.push(data);
+localStorage.setItem(key, JSON.stringify(existingData));
+console.log('Data saved to localStorage:', key);
+}
+  var element2 = document.getElementById("hide it2");
+  if (element2) {
+    element2.style.display = "none";
+  }
+}
+
+
+   
+
+    const hourlyTraffic = carCounts.reduce((acc, count, index) => {
+        const hourIndex = Math.floor(index / 3); 
+        acc[hourIndex] = (acc[hourIndex] || 0) + count;
+        return acc;
+    }, {});
+
+    const dailyTraffic = carCounts.reduce((acc, count) => {
+        acc += count;
+        return acc;
+    }, 0);
+
+    fetch('data.json')
+        .then(response => response.json())
+        .then(jsonData => {
+            jsonData.hourlyTraffic = hourlyTraffic;
+            jsonData.dailyTraffic = dailyTraffic;
+
+            fetch('data.json')
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Error fetching data');
+        }
+    })
+    .then(jsonData => {
+           
+                console.log('Data saved successfully:', data);
+            })
+            .catch(error => {
+                console.error('Error saving data:', error);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Retrieve data from localStorage
+let currentPlatesData = JSON.parse(localStorage.getItem('CurrentPlates')) || [];
+
+// Create an object to store unique plate numbers and their timestamps
+const uniquePlates = {};
+
+// Get the table body element
+const tableBody = document.querySelector('.table tbody');
+
+// Function to add a new row to the table
+function addRowToTable(entry) {
+  const row = document.createElement('tr');
+
+  const plateCell = document.createElement('td');
+  plateCell.classList.add('align-middle');
+  const plateDiv = document.createElement('div');
+  plateDiv.classList.add('d-flex', 'px-2', 'py-1', 'align-items-center');
+  const plateText = document.createElement('h6');
+  plateText.classList.add('mb-0', 'text-sm');
+  plateText.textContent = entry.plateNumber;
+  plateDiv.appendChild(plateText);
+  plateCell.appendChild(plateDiv);
+
+  const startTimeCell = document.createElement('td');
+  startTimeCell.classList.add('align-middle', 'text-center', 'text-sm');
+  const startTimeText = document.createElement('span');
+  startTimeText.classList.add('text-xs', 'font-weight-bold', 'start-time');
+  startTimeText.dataset.timestamp = entry.timestamp;
+  startTimeText.textContent = new Date(entry.timestamp).toLocaleTimeString();
+  startTimeCell.appendChild(startTimeText);
+
+  const timerCell = document.createElement('td');
+  timerCell.classList.add('align-middle', 'text-center', 'text-sm');
+  const timerText = document.createElement('span');
+  timerText.classList.add('text-xs', 'font-weight-bold', 'timer');
+  timerText.textContent = '0 s';
+  timerCell.appendChild(timerText);
+
+  row.appendChild(plateCell);
+  row.appendChild(startTimeCell);
+  row.appendChild(timerCell);
+  tableBody.appendChild(row);
+}
+
+// Function to update timers
+const updateTimers = () => {
+  document.querySelectorAll('tr').forEach(row => {
+    const startTimeTextElement = row.querySelector('.start-time');
+    const timerTextElement = row.querySelector('.timer');
+    
+    if (startTimeTextElement && timerTextElement) {
+      const startTime = new Date(startTimeTextElement.dataset.timestamp).getTime(); // Get timestamp from data attribute
+      const currentTime = Date.now(); // Get current time
+      const elapsedTime = Math.floor((currentTime - startTime) / 1000); // Calculate elapsed time in seconds
+      
+      timerTextElement.textContent = `${elapsedTime} s`;
+    }
+  });
+};
+
+// Update the table every second
+setInterval(() => {
+  // Check for new plate entries
+  currentPlatesData.forEach(entry => {
+    if (!uniquePlates[entry.plateNumber]) {
+      uniquePlates[entry.plateNumber] = entry.timestamp;
+      addRowToTable(entry);
+    }
+  });
+
+  // Update the timers
+  updateTimers();
+}, 1000);
+
+
+
+function clearAllData() {
+  // Get all the keys in localStorage
+  const keys = Object.keys(localStorage);
+
+  // Loop through the keys and remove each item from localStorage
+  keys.forEach(key => {
+    localStorage.removeItem(key);
+  });
+
+  console.log('All data has been cleared from localStorage.');
+}
+    </script>
+</body>
+</html>

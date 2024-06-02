@@ -1,0 +1,19 @@
+{
+    "data": [
+      {
+        "plateNumber": "ABC123",
+        "timestamp": "2023-05-29T12:34:56Z",
+        "status": "allowed"
+      },
+      {
+        "plateNumber": "XYZ456",
+        "timestamp": "2023-05-28T15:22:00Z",
+        "status": "allowed"
+      },
+      {
+        "plateNumber": "DEF789",
+        "timestamp": "2023-05-27T09:48:30Z",
+        "status": "trespassing"
+      }
+    ]
+  }
